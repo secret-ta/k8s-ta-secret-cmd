@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-	cryptomodule "github.com/secret-ta/k8s-ta-internal-library/crypto-module"
+	cryptomodule "github.com/secret-ta/k8s-ta-internal-crypto-library"
 	"github.com/secret-ta/k8s-ta-internal-library/util"
 )
 

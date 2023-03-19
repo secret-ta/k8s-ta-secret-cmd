@@ -11,7 +11,7 @@ import (
 
 	"github.com/joho/godotenv"
 	"github.com/pkg/errors"
-	cryptomodule "github.com/secret-ta/k8s-ta-internal-library/crypto-module"
+	cryptomodule "github.com/secret-ta/k8s-ta-internal-crypto-library"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"

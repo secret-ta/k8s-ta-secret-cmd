@@ -4,7 +4,7 @@ import (
 	"encoding/pem"
 	"fmt"
 
-	cryptomodule "github.com/secret-ta/k8s-ta-internal-library/crypto-module"
+	cryptomodule "github.com/secret-ta/k8s-ta-internal-crypto-library"
 )
 
 func execGenerateKeys(c cryptomodule.CryptoModule, opt Option) error {
