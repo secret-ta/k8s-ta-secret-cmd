@@ -21,11 +21,7 @@ func execCombineSecretsV2(c cryptomodule.CryptoModule, opt Option, filenames []s
 	keys := [][]byte{}
 
 	for _, filename := range filenames {
-		str, err := readFileString(filename)
-		if err != nil {
-			return err
-		}
-		b, err := util.Base64StringToByte(str)
+		b, err := c.KeyFromFile(filename)
 		if err != nil {
 			return err
 		}

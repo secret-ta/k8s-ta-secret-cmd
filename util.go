@@ -1,7 +1,7 @@
 package k8stasecretcmd
 
 import (
-	"bufio"
+	"encoding/pem"
 	"fmt"
 	"math/rand"
 	"os"
@@ -12,7 +12,6 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/pkg/errors"
 	cryptomodule "github.com/secret-ta/k8s-ta-internal-library/crypto-module"
-	"github.com/secret-ta/k8s-ta-internal-library/util"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -34,32 +33,14 @@ func removeIndex[T any](s []T, index int) []T {
 	return append(ret, s[index+1:]...)
 }
 
-func readFileString(filename string) (string, error) {
-	file, err := os.Open(filename)
-	if err != nil {
-		return "", err
-	}
-	defer file.Close()
-
-	strs := []string{}
-
-	scanner := bufio.NewScanner(file)
-
-	for scanner.Scan() {
-		strs = append(strs, scanner.Text())
-	}
-
-	if err := scanner.Err(); err != nil {
-		return "", err
-	}
-
-	return strings.Join(strs, ""), nil
-}
-
 func privateKeyFormat(private []byte) string {
-	str := util.ByteToBase64String(private)
-	chunks := chunksString(str, 64)
-	return strings.Join(chunks, "\n") + "\n"
+	privateStr := string(
+		pem.EncodeToMemory(&pem.Block{
+			Type:  "RSA PRIVATE KEY",
+			Bytes: private,
+		}),
+	)
+	return privateStr
 }
 
 func writeStringToFile(path, name, content string) (err error) {
@@ -173,26 +154,4 @@ func parseFile(filename string) (envMap map[string]string, err error) {
 	defer file.Close()
 
 	return godotenv.Parse(file)
-}
-
-func chunksString(s string, chunkSize int) []string {
-	if len(s) == 0 {
-		return nil
-	}
-	if chunkSize >= len(s) {
-		return []string{s}
-	}
-	var chunks []string = make([]string, 0, (len(s)-1)/chunkSize+1)
-	currentLen := 0
-	currentStart := 0
-	for i := range s {
-		if currentLen == chunkSize {
-			chunks = append(chunks, s[currentStart:i])
-			currentLen = 0
-			currentStart = i
-		}
-		currentLen++
-	}
-	chunks = append(chunks, s[currentStart:])
-	return chunks
 }

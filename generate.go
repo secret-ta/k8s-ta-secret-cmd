@@ -26,13 +26,7 @@ func execGenerateKeys(c cryptomodule.CryptoModule, opt Option) error {
 	}
 
 	if !opt.SplitKey {
-		privateStr := string(
-			pem.EncodeToMemory(&pem.Block{
-				Type:  "RSA PRIVATE KEY",
-				Bytes: private,
-			}),
-		)
-		if err := writeStringToFile(opt.OutputPath, "private.key", privateStr); err != nil {
+		if err := writeStringToFile(opt.OutputPath, "private.key", privateKeyFormat(private)); err != nil {
 			return err
 		}
 	} else {
@@ -41,14 +35,8 @@ func execGenerateKeys(c cryptomodule.CryptoModule, opt Option) error {
 			return err
 		}
 		for i, key := range bytes {
-			privateStr := string(
-				pem.EncodeToMemory(&pem.Block{
-					Type:  "RSA PRIVATE KEY",
-					Bytes: key,
-				}),
-			)
 			filename := fmt.Sprintf("private-%d.key", i)
-			if err := writeStringToFile(opt.OutputPath, filename, privateStr); err != nil {
+			if err := writeStringToFile(opt.OutputPath, filename, privateKeyFormat(key)); err != nil {
 				return err
 			}
 		}
