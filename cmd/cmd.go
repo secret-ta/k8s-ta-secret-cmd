@@ -15,6 +15,7 @@ var (
 	secretname = flag.String("name", "", "secret name")
 	filename   = flag.String("filename", "", "file name")
 
+	bits      = flag.Int("bits", 0, "key bits size")
 	split     = flag.Bool("split", false, "split private key")
 	parts     = flag.Int("parts", 1, "private key parts")
 	threshold = flag.Int("threshold", 1, "private key threshold")
@@ -27,6 +28,7 @@ Encrypt secret util
 k8stasecretcmd COMMAND_ARGS
 	[-name SECRET_NAME]
 	[-filename SECRET_FILE]
+	[-bits KEY_BITS]
 	[-split]
 	[-parts KEY_PARTS]
 	[-threshold KEYS_THRESHOLD]
@@ -56,12 +58,13 @@ func main() {
 		return
 	}
 
-	_, err := k8stasecretcmd.Exec(k8stasecretcmd.Option{
+	err := k8stasecretcmd.Exec(k8stasecretcmd.Option{
 		Cmd: args[0],
 
 		SecretName:     *secretname,
 		SecretFileName: *filename,
 
+		Bits:         *bits,
 		SplitKey:     *split,
 		KeyParts:     *parts,
 		KeyThreshold: *threshold,

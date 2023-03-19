@@ -16,6 +16,7 @@ type (
 		SecretName     string
 		SecretFileName string
 
+		Bits         int
 		SplitKey     bool
 		KeyParts     int
 		KeyThreshold int
@@ -30,15 +31,19 @@ type (
 	}
 )
 
-func Exec(opt Option) (string, error) {
-	c := cryptomodule.NewCryptoModule(nil)
+func Exec(opt Option) error {
+	c := cryptomodule.NewCryptoModule(&cryptomodule.Option{
+		KeyBits: opt.Bits,
+	})
 
 	switch strings.ToLower(opt.Cmd) {
 	case "create", "update":
 		return execCreateSecrets(c, opt)
 	case "combine":
 		return execCombineSecrets(c, opt)
+	case "generate":
+		return execGenerateKeys(c, opt)
 	}
 
-	return "", errors.New("unsupported command")
+	return errors.New("unsupported command")
 }

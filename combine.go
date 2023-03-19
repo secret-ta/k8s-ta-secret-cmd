@@ -11,10 +11,10 @@ import (
 	"github.com/secret-ta/k8s-ta-internal-library/util"
 )
 
-func execCombineSecretsV2(c cryptomodule.CryptoModule, opt Option, filenames []string) (string, error) {
+func execCombineSecretsV2(c cryptomodule.CryptoModule, opt Option, filenames []string) error {
 	for _, filename := range filenames {
 		if _, err := os.Stat(filename); os.IsNotExist(err) {
-			return "", err
+			return err
 		}
 	}
 
@@ -23,41 +23,41 @@ func execCombineSecretsV2(c cryptomodule.CryptoModule, opt Option, filenames []s
 	for _, filename := range filenames {
 		str, err := readFileString(filename)
 		if err != nil {
-			return "", err
+			return err
 		}
 		b, err := util.Base64StringToByte(str)
 		if err != nil {
-			return "", err
+			return err
 		}
 		keys = append(keys, b)
 	}
 
 	combined, err := c.CombineKeys(keys)
 	if err != nil {
-		return "", err
+		return err
 	}
 
 	err = createDirectoryIfNotExists(opt.OutputPath)
 	if err != nil {
-		return "", err
+		return err
 	}
 
 	if err := writeStringToFile(opt.OutputPath, "privatekey.key", privateKeyFormat(combined)); err != nil {
-		return "", err
+		return err
 	}
 
 	fmt.Printf("secrets successfully combined on dir %s\n", opt.OutputPath)
 	fmt.Printf("keep private key safe :)\n")
 
-	return util.ByteToBase64String(combined), nil
+	return nil
 }
 
-func execCombineSecrets(c cryptomodule.CryptoModule, opt Option) (string, error) {
+func execCombineSecrets(c cryptomodule.CryptoModule, opt Option) error {
 	if opt.SecretFileName == "" {
-		return "", errors.New("v: input file can't be empty")
+		return errors.New("v: input file can't be empty")
 	}
 	if opt.OutputPath == "" {
-		return "", errors.New("v: output dir can't be empty")
+		return errors.New("v: output dir can't be empty")
 	}
 
 	splitFile := strings.Split(opt.SecretFileName, ",")
@@ -68,7 +68,7 @@ func execCombineSecrets(c cryptomodule.CryptoModule, opt Option) (string, error)
 
 	file, err := os.Open(opt.SecretFileName)
 	if err != nil {
-		return "", err
+		return err
 	}
 	defer file.Close()
 
@@ -80,31 +80,31 @@ func execCombineSecrets(c cryptomodule.CryptoModule, opt Option) (string, error)
 		key := scanner.Text()
 		b, err := util.Base64StringToByte(key)
 		if err != nil {
-			return "", err
+			return err
 		}
 		keysByte = append(keysByte, b)
 	}
 
 	if err := scanner.Err(); err != nil {
-		return "", err
+		return err
 	}
 
 	combined, err := c.CombineKeys(keysByte)
 	if err != nil {
-		return "", err
+		return err
 	}
 
 	err = createDirectoryIfNotExists(opt.OutputPath)
 	if err != nil {
-		return "", err
+		return err
 	}
 
 	if err := writeStringToFile(opt.OutputPath, "privatekey.key", privateKeyFormat(combined)); err != nil {
-		return "", err
+		return err
 	}
 
 	fmt.Printf("secrets successfully combined on dir %s\n", opt.OutputPath)
 	fmt.Printf("keep private key safe :)\n")
 
-	return util.ByteToBase64String(combined), nil
+	return nil
 }
