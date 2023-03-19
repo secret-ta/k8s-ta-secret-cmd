@@ -3,13 +3,12 @@ module github.com/secret-ta/k8s-ta-secret-cmd
 go 1.20
 
 require (
-	github.com/hashicorp/vault v1.13.0 // indirect
 	github.com/joho/godotenv v1.5.1
 	github.com/pkg/errors v0.9.1
 )
 
 require (
-	github.com/secret-ta/k8s-ta-internal-crypto-library v0.0.0-20230319151003-b0befa3d7702
+	github.com/secret-ta/k8s-ta-internal-crypto-library v0.0.0-20230319160931-a2bc83033eef
 	github.com/secret-ta/k8s-ta-internal-library v0.0.0-20230319150938-c41850f3fed4
 	k8s.io/api v0.25.3
 	k8s.io/apimachinery v0.25.3
