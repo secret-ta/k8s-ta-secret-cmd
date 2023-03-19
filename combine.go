@@ -42,7 +42,7 @@ func execCombineSecretsV2(c cryptomodule.CryptoModule, opt Option, filenames []s
 		return err
 	}
 
-	if err := writeStringToFile(opt.OutputPath, "privatekey.key", privateKeyFormat(combined)); err != nil {
+	if err := writeStringToFile(opt.OutputPath, "private.key", privateKeyFormat(combined)); err != nil {
 		return err
 	}
 
@@ -99,7 +99,7 @@ func execCombineSecrets(c cryptomodule.CryptoModule, opt Option) error {
 		return err
 	}
 
-	if err := writeStringToFile(opt.OutputPath, "privatekey.key", privateKeyFormat(combined)); err != nil {
+	if err := writeStringToFile(opt.OutputPath, "private.key", privateKeyFormat(combined)); err != nil {
 		return err
 	}
 

@@ -78,7 +78,7 @@ func execCreateSecrets(c cryptomodule.CryptoModule, opt Option) error {
 		}
 	}
 
-	if err := writeStringToFile(opt.OutputPath, "privatekey.key", privateKeyFormat(privateKeyToKeep)); err != nil {
+	if err := writeStringToFile(opt.OutputPath, "private.key", privateKeyFormat(privateKeyToKeep)); err != nil {
 		return err
 	}
 
