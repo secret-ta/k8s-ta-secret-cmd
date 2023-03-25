@@ -25,11 +25,11 @@ func execGenerateKeys(c cryptomodule.CryptoModule, opt Option) error {
 		return err
 	}
 
-	if !opt.SplitKey {
-		if err := writeStringToFile(opt.OutputPath, "private.key", privateKeyFormat(private)); err != nil {
-			return err
-		}
-	} else {
+	if err := writeStringToFile(opt.OutputPath, "private.key", privateKeyFormat(private)); err != nil {
+		return err
+	}
+
+	if opt.SplitKey {
 		bytes, err := c.SplitKey(private, opt.KeyParts, opt.KeyThreshold)
 		if err != nil {
 			return err
