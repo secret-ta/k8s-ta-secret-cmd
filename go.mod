@@ -8,7 +8,7 @@ require (
 )
 
 require (
-	github.com/secret-ta/k8s-ta-internal-crypto-library v0.0.0-20230319160931-a2bc83033eef
+	github.com/secret-ta/k8s-ta-internal-crypto-library v0.0.0-20230325152810-09f7c6d11082
 	github.com/secret-ta/k8s-ta-internal-library v0.0.0-20230319150938-c41850f3fed4
 	k8s.io/api v0.25.3
 	k8s.io/apimachinery v0.25.3
