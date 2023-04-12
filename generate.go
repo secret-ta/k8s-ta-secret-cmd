@@ -1,7 +1,6 @@
 package k8stasecretcmd
 
 import (
-	"encoding/pem"
 	"fmt"
 
 	cryptomodule "github.com/secret-ta/k8s-ta-internal-crypto-library"
@@ -13,12 +12,7 @@ func execGenerateKeys(c cryptomodule.CryptoModule, opt Option) error {
 		return err
 	}
 
-	publicStr := string(
-		pem.EncodeToMemory(&pem.Block{
-			Type:  "RSA PUBLIC KEY",
-			Bytes: public,
-		}),
-	)
+	publicStr := publicKeyFormat(public)
 
 	err = createDirectoryIfNotExists(opt.OutputPath)
 	if err != nil {

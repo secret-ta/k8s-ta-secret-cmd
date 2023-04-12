@@ -43,6 +43,16 @@ func privateKeyFormat(private []byte) string {
 	return privateStr
 }
 
+func publicKeyFormat(public []byte) string {
+	publicStr := string(
+		pem.EncodeToMemory(&pem.Block{
+			Type:  "RSA PUBLIC KEY",
+			Bytes: public,
+		}),
+	)
+	return publicStr
+}
+
 func writeStringToFile(path, name, content string) (err error) {
 	f1, err := os.Create(filepath.Join(path, name))
 	if err != nil {

@@ -22,6 +22,8 @@ var (
 
 	output = flag.String("o", "", "output folder")
 
+	node = flag.Int("node", 1, "node")
+
 	usage = `
 Encrypt secret util
 
@@ -70,6 +72,8 @@ func main() {
 		KeyThreshold: *threshold,
 
 		OutputPath: *output,
+
+		Node: *node,
 	})
 
 	if err != nil {

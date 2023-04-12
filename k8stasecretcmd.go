@@ -21,6 +21,8 @@ type (
 		KeyParts     int
 		KeyThreshold int
 
+		Node int
+
 		OutputPath string
 	}
 
@@ -43,6 +45,8 @@ func Exec(opt Option) error {
 		return execCombineSecrets(c, opt)
 	case "generate":
 		return execGenerateKeys(c, opt)
+	case "custom-generate":
+		return execCustomGenerateKeys(c, opt)
 	}
 
 	return errors.New("unsupported command")
